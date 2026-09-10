@@ -443,6 +443,56 @@ Use slash command `/skill:i-have-adhd` to invoke the skill explicitly.
 </details>
 
 <details>
+<summary><strong>Kiro</strong></summary>
+
+Kiro reads native **steering** files and **agent hooks** from the workspace `.kiro/` directory, plus `AGENTS.md`. The repo ships both a manual steering file (opt-in) and a `SessionStart` hook (always-on). Kiro has no plugin marketplace, so installation is a copy into your project's `.kiro/`.
+
+### Install (steering, opt-in)
+
+```bash
+git clone https://github.com/ayghri/i-have-adhd
+mkdir -p .kiro/steering
+cp i-have-adhd/.kiro/steering/i-have-adhd.md .kiro/steering/
+```
+
+The file ships with `inclusion: manual`, so it stays off until you invoke it. In a Kiro chat, type `#i-have-adhd` to pull the ruleset into context for that request. It applies until you say "stop adhd mode" or "normal mode".
+
+### Install (hook, always-on)
+
+```bash
+mkdir -p .kiro/hooks
+cp i-have-adhd/.kiro/hooks/i-have-adhd-always.json .kiro/hooks/
+```
+
+The `SessionStart` hook injects the full ruleset at the start of every session, no `#i-have-adhd` needed. It reads the hook file at startup, so start a new session after copying it.
+
+### Verify
+
+- Steering: type `#` in a Kiro chat and confirm `i-have-adhd` is listed.
+- Hook: open the **Agent Hooks** section of the Kiro explorer and confirm **i-have-adhd always-on** appears, or run the command palette entry `Open Kiro Hook UI`.
+
+### Update
+
+Re-copy either file after `git pull`:
+
+```bash
+git -C i-have-adhd pull
+cp i-have-adhd/.kiro/steering/i-have-adhd.md .kiro/steering/
+cp i-have-adhd/.kiro/hooks/i-have-adhd-always.json .kiro/hooks/    # if using always-on
+```
+
+### Uninstall
+
+```bash
+rm .kiro/steering/i-have-adhd.md        # steering route
+rm .kiro/hooks/i-have-adhd-always.json  # always-on route
+```
+
+Keep the hook installed but turn it off for the current session with "stop adhd mode"; delete the hook file to turn always-on off for good.
+
+</details>
+
+<details>
 <summary><strong>OpenCode</strong></summary>
 
 OpenCode loads this repository as a server plugin: `.opencode/plugins/i-have-adhd.mjs` registers the `skills/` entry point and the `/i-have-adhd` command, and injects the ruleset when always-on is enabled. OpenCode also reads `skills/` natively, so the skill still works even without the plugin — the plugin adds the `/i-have-adhd` command and the always-on flag.
