@@ -32,6 +32,7 @@ Agents may read and reference any GitHub issue or pull request. Commenting has n
 | Shared hooks | `hooks/hooks.json`, `hooks/always-on.*` | Hook declarations and cross-platform always-on behavior. |
 | Pi and OMP | `package.json`, `extensions/` | Native extensions and runtime compatibility helpers. |
 | OpenCode | `opencode.json`, `.opencode/` | OpenCode plugin and command entry points. |
+| Kiro | `.kiro/steering/i-have-adhd.md`, `.kiro/hooks/i-have-adhd-always.json` | Manual steering file (opt-in) and always-on `SessionStart` hook. |
 | Other runtimes | `qwen-extension.json`, `kimi.plugin.json`, `gemini-extension.json`, `GEMINI.md`, `plugin.json` | Qwen, Kimi, Gemini, and additional plugin metadata. |
 | Documentation | `README.md`, `INSTALL.md`, `.github/readme/`, `.github/install/` | User-facing overview, installation, and translations. |
 | Verification | `tests/`, `scripts/` | Unit tests, compatibility checks, and evaluation tooling. |
@@ -48,11 +49,12 @@ When debugging or changing one integration, begin with its entry point:
 | Pi | `package.json` (`pi`), `extensions/i-have-adhd.ts` |
 | OMP | `package.json` (`omp`), `extensions/i-have-adhd.ts`, `extensions/context-compat.ts` |
 | OpenCode | `opencode.json`, `.opencode/plugins/i-have-adhd.mjs`, `.opencode/command/i-have-adhd.md` |
+| Kiro | `.kiro/steering/i-have-adhd.md`, `.kiro/hooks/i-have-adhd-always.json` |
 | Qwen, Kimi, Gemini | The corresponding manifest above, plus `GEMINI.md` for Gemini behavior |
 
 ## Source-of-truth rules
 
-- Change `skills/i-have-adhd/SKILL.md` first when changing skill behavior, then synchronize the `.cursor` mirror.
+- Change `skills/i-have-adhd/SKILL.md` first when changing skill behavior, then synchronize the `.cursor` mirror and the Kiro copies (`.kiro/steering/i-have-adhd.md` and the ruleset embedded in `.kiro/hooks/i-have-adhd-always.json`).
 - Treat manifests and hook declarations as runtime contracts. Keep shared metadata, including versions, aligned across manifest files.
 - Keep installation and behavior claims in `README.md`, `INSTALL.md`, and their localized counterparts accurate.
 - Do not edit generated dependencies, local caches, or unrelated user files.
